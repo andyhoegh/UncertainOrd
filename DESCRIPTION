@@ -1,0 +1,18 @@
+Package: UncertainOrd
+Type: Package
+Title: Accounts for Uncertainty in Model-Based Unconstrained Ordination
+Version: 0.1.0
+Authors@R: person("Andrew", "Hoegh", email = "andrew.hoegh@montana.edu", role = c("aut", "cre"))
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: Contains functions for visualizing uncertainty in unconstrained ordination
+    and has the ability to estimate uncertainty based on the number of species
+    and number of sampling sites used in unconstrained ordination study.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dplyr,
+    ggplot2,
+    boral,
+    coda
+RoxygenNote: 6.0.1
