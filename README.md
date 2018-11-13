@@ -1,6 +1,6 @@
 UncertainOrd is an R package for designing ordination studies and ulimately visualizing uncertainty in unconstrained ordination.
 
-## Instructions for installing eDNAoccupancy
+## Instructions for installing UncertainOrd
 
 1. Start R
 
