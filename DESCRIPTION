@@ -18,4 +18,4 @@ Imports:
     tidyr,
     MASS,
     cluster
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

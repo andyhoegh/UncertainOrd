@@ -4,7 +4,8 @@
 \alias{simProbitY}
 \title{Binary Data Simulation}
 \usage{
-simProbitY(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 1, sd.beta = 1)
+simProbitY(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 1,
+  sd.beta = 1)
 }
 \arguments{
 \item{n}{- number of sites.}

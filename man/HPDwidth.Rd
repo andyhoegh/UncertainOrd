@@ -4,8 +4,8 @@
 \alias{HPDwidth}
 \title{HPD Width Simulation}
 \usage{
-HPDwidth(family, n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 1,
-  sd.beta = 1, num.replicates = 1)
+HPDwidth(family, n, p, num.replicates = 1, mu.alpha = 0,
+  sd.alpha = 1, mu.beta = 1, sd.beta = 1)
 }
 \arguments{
 \item{family}{- family of the distribution, "binomial" and "poisson" are currently supported}
@@ -14,6 +14,8 @@ HPDwidth(family, n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 1,
 
 \item{p}{- number of species}
 
+\item{num.replicates}{- number of simulations: default is 1}
+
 \item{mu.alpha}{- mean for alpha parameter: default is 0}
 
 \item{sd.alpha}{- sd for alpha parameter: default is 1}
@@ -21,8 +23,6 @@ HPDwidth(family, n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 1,
 \item{mu.beta}{- mean for beta parameter: default is 0}
 
 \item{sd.beta}{- sd for beta parameter: default is 1}
-
-\item{num.replicates}{- number of simulations: default is 1}
 }
 \value{
 width - average HPD across all latent factors

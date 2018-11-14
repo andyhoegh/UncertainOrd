@@ -4,7 +4,8 @@
 \alias{CountHPD}
 \title{Simulate HPD Width of Abundance Data}
 \usage{
-CountHPD(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 0, sd.beta = 1)
+CountHPD(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 0,
+  sd.beta = 1)
 }
 \arguments{
 \item{n}{- number of sites.}
