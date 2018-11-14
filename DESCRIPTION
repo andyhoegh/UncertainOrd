@@ -14,5 +14,8 @@ Imports:
     dplyr,
     ggplot2,
     boral,
-    coda
+    coda,
+    tidyr,
+    MASS,
+    cluster
 RoxygenNote: 6.0.1
