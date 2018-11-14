@@ -14,7 +14,7 @@
 
 CountHPD <- function(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 0, sd.beta = 1){
   sim.vals <- simPoissonY(n = n, p = p, mu.alpha = mu.alpha, sd.alpha = sd.alpha, mu.beta = mu.beta, sd.beta = sd.beta)
-  count.mcmc <- boral::boral(sim.vals$mat, family = 'poisson', num.lv = 2, row.eff = 'fixed', save.model =T, prior.control = list(type=c('normal','normal','normal','halfcauchy'), hypparams = c(1,1,1,20) ))
+  count.mcmc <- boral::boral(sim.vals$mat, family = 'poisson', lv.control = list(num.lv = 2), row.eff = 'fixed', save.model =T, prior.control = list(type=c('normal','normal','normal','halfcauchy'), hypparams = c(1,1,1,20) ))
   set.seed(NULL) # as boral sets seed
   count.mcmc.sims <- count.mcmc$jags.model$BUGSoutput$sims.matrix
   count.mcmc.sims1  <- count.mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('lvs[')) %>% dplyr::select(dplyr::ends_with('1]'))
