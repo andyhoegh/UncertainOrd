@@ -17,4 +17,4 @@ This material is based upon work supported by the U.S. Geological Survey under C
 
 ## Contact information
 
-Andrew Hoegh (andrew.hoegh@montana.edu) developed this R package with scientific expertise from Dave Roberts.
+Andrew Hoegh (andrew.hoegh@montana.edu) developed this R package.
