@@ -1,7 +1,5 @@
 UncertainOrd is an R package for designing ordination studies and ulimately visualizing uncertainty in unconstrained ordination.
 
-This material is based upon work supported by the U.S. Geological Survey under Cooperative Agreement Number G17AC00147.
-
 ## Instructions for installing UncertainOrd
 
 1. Start R
