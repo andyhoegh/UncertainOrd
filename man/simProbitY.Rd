@@ -34,5 +34,5 @@ theta.true - true values of alpha
 z.true - true values of alpha
 }
 \description{
-This function simulates multivariate binary data from a latent factor model.
+This function simulates multivariate binary data from a latent factor model updated 2212019.
 }

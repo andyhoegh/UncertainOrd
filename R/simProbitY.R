@@ -1,6 +1,6 @@
 #' Binary Data Simulation
 #'
-#' This function simulates multivariate binary data from a latent factor model.
+#' This function simulates multivariate binary data from a latent factor model updated 2212019.
 #' @param n - number of sites.
 #' @param p - number of species
 #' @param mu.alpha - mean for alpha parameter: default is 0
