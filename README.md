@@ -15,4 +15,4 @@ UncertainOrd is an R package for designing ordination studies and ulimately visu
 
 ## Contact information
 
-Andrew Hoegh (andrew.hoegh@montana.edu) developed this R package with scientific expertise from Dave Roberts.
+Andrew Hoegh (andrew.hoegh@montana.edu) developed this R package.
