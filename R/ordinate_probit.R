@@ -84,5 +84,5 @@ ordinate_probit <- function(num.mcmc, Y, burn.in = 100){
       z.samples[iter,i,] <- mnormt::rmnorm(n=1, mean = m.z, varcov = S.z)
     }
   }
-  return(list(alpha.samples = alpha.samples, beta.samples = beta.samples, theta.samples=theta.samples, z.samples = z.samples))
+  return(list(alpha.samples = alpha.samples[burn.in:num.mcmc], beta.samples = beta.samples[burn.in:num.mcmc], theta.samples=theta.samples[burn.in:num.mcmc,], z.samples = z.samples[burn.in:num.mcmc,]))
 }
