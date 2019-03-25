@@ -2,15 +2,19 @@
 #'
 #' Fits latent factor model to binary data with probit link
 #' @param num.mcmc - number of mcmc iterations
-#' @param Y.vec - an n X p vectorized representation of presence data
+#' @param Y - an n X p matrix of presence data
+#' @param burn.in - number of burn in samples, default is 100
 #' @return alpha.samples
 #' @return beta.samples
 #' @return theta.samples
 #' @return z.samples
 #' @export
 
-ordinate_probit <- function(num.mcmc, Y.vec){
+ordinate_probit <- function(num.mcmc, Y, burn.in = 100){
   # Initialize Storage
+  n <- nrow(Y)
+  p <- ncol(Y)
+  Y.vec <- as.numeric(Y)
   alpha.samples <- matrix(0, num.mcmc, n, byrow=T)
   beta.samples <- matrix(0,num.mcmc, p, byrow=T)
   theta.samples <- array(0, dim = c(num.mcmc,p,2))

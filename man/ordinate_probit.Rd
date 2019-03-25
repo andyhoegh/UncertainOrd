@@ -4,12 +4,14 @@
 \alias{ordinate_probit}
 \title{Probit Ordination}
 \usage{
-ordinate_probit(num.mcmc, Y.vec)
+ordinate_probit(num.mcmc, Y, burn.in = 100)
 }
 \arguments{
 \item{num.mcmc}{- number of mcmc iterations}
 
-\item{Y.vec}{- an n X p vectorized representation of presence data}
+\item{Y}{- an n X p matrix of presence data}
+
+\item{burn.in}{- number of burn in samples, default is 100}
 }
 \value{
 alpha.samples
