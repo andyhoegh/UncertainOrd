@@ -17,7 +17,9 @@ Imports:
     coda,
     tidyr,
     MASS,
-    cluster
+    cluster,
+    truncnorm,
+    mnormt
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
