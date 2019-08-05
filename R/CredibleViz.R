@@ -6,14 +6,15 @@
 #' @param type - plot type, options are 'points', 'circles', 'scatter'
 #' @param items - items to display uncertainty, only works for circles or scatter
 #' @return plot.obj - ggplot object
+#' @importFrom magrittr "%>%"
 #' @export
 
 CredibleViz <- function(coord1, coord2, type = 'points', items = NULL){
   ### Create thin data
   num.pts <- ncol(coord1)
 
-  coord1.thin <- coord1 %>% as.data.frame() %>% gather %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
-  coord2.thin <- coord2 %>% as.data.frame() %>% gather %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
+  coord1.thin <- coord1 %>% as.data.frame() %>% tidyr::gather %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
+  coord2.thin <- coord2 %>% as.data.frame() %>% tidyr::gather %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
   combined <- data.frame(lv1 = coord1.thin$value, lv2 = coord2.thin$value, key = coord1.thin$key)
   combined.summarized <- combined %>% dplyr::group_by(key) %>% dplyr::summarise(mean.lv1 = mean(lv1), mean.lv2 = mean(lv2)) %>% dplyr::mutate(id = 1:num.pts)
 

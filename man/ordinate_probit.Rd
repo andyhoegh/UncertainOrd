@@ -25,3 +25,9 @@ z.samples
 \description{
 Fits latent factor model to binary data with probit link
 }
+\examples{
+set.seed(08052019)
+Y <- rbinom(100,1,.5)
+Y.matrix <- matrix(Y, 10, 10)
+ordinate_probit(1000, Y.matrix)
+}

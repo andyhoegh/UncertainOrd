@@ -19,7 +19,8 @@ Imports:
     MASS,
     cluster,
     truncnorm,
-    mnormt
+    mnormt,
+    magrittr
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,

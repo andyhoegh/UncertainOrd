@@ -8,6 +8,11 @@
 #' @return beta.samples
 #' @return theta.samples
 #' @return z.samples
+#' @examples
+#' set.seed(08052019)
+#' Y <- rbinom(100,1,.5)
+#' Y.matrix <- matrix(Y, 10, 10)
+#' ordinate_probit(1000, Y.matrix)
 #' @export
 
 ordinate_probit <- function(num.mcmc, Y, burn.in = 100){
