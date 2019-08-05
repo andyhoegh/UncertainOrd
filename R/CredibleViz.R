@@ -8,7 +8,7 @@
 #' @return plot.obj - ggplot object
 #' @export
 
-CredibleViz <- function(coord1, coord2, type = 'points', item = NULL){
+CredibleViz <- function(coord1, coord2, type = 'points', items = NULL){
   ### Create thin data
   num.pts <- ncol(coord1)
 
