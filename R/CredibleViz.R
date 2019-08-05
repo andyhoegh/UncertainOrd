@@ -2,7 +2,7 @@
 #'
 #' This function simulates multivariate Poisson count data from a latent factor model.
 #' @param coord1 - mcmc object with first coordinate of projection
-#' @param coord2 - mcmc object with first coordinate of projection
+#' @param coord2 - mcmc object with second coordinate of projection
 #' @param type - plot type, options are 'points', 'circles', 'scatter'
 #' @param items - items to display uncertainty, only works for circles or scatter
 #' @return plot.obj - ggplot object

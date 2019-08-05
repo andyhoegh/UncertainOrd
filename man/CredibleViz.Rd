@@ -4,12 +4,12 @@
 \alias{CredibleViz}
 \title{Visualize Uncertainty in Projection}
 \usage{
-CredibleViz(coord1, coord2, type = "points", item = NULL)
+CredibleViz(coord1, coord2, type = "points", items = NULL)
 }
 \arguments{
 \item{coord1}{- mcmc object with first coordinate of projection}
 
-\item{coord2}{- mcmc object with first coordinate of projection}
+\item{coord2}{- mcmc object with second coordinate of projection}
 
 \item{type}{- plot type, options are 'points', 'circles', 'scatter'}
 
