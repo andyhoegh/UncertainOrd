@@ -13,6 +13,8 @@
 #' @return beta.true - true values of alpha
 #' @return theta.true - true values of alpha
 #' @return z.true - true values of alpha
+#' @examples
+#' simPoissonY(10,10)
 #' @export
 
 simPoissonY <- function(n, p, mu.alpha = 0, sd.alpha = 1 , mu.beta = 0, sd.beta = 1){

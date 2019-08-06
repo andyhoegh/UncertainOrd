@@ -13,6 +13,8 @@
 #' @return beta.true - true values of alpha
 #' @return theta.true - true values of alpha
 #' @return z.true - true values of alpha
+#' @examples
+#' simProbitY(10,10)
 #' @export
 
 simProbitY <- function(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 1, sd.beta = 1 ){

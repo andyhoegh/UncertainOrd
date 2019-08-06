@@ -36,3 +36,6 @@ z.true - true values of alpha
 \description{
 This function simulates multivariate binary data from a latent factor model updated 2212019.
 }
+\examples{
+simProbitY(10,10)
+}

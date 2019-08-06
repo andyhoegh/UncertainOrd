@@ -11,9 +11,9 @@ CredibleViz(coord1, coord2, type = "points", items = NULL)
 
 \item{coord2}{- mcmc object with second coordinate of projection}
 
-\item{type}{- plot type, options are 'points', 'circles', 'scatter'}
+\item{type}{- plot type, options are 'points', 'circles', 'scatter', 'density}
 
-\item{items}{- items to display uncertainty, only works for circles or scatter}
+\item{items}{- items to display uncertainty, only works for circles, density, or scatter}
 }
 \value{
 plot.obj - ggplot object
@@ -22,8 +22,9 @@ plot.obj - ggplot object
 This function simulates multivariate Poisson count data from a latent factor model.
 }
 \examples{
-data(spider)
+data(spider, package = 'mvabund')
 spider.matrix <- matrix(as.numeric(spider$abund > 0), nrow = 28, ncol = 12)
 ord <- ordinate_probit(500, spider.matrix)
-CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'circles', items = c(1,10,16))
+CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'points', items = c(1,10,16))
+CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'density', items = c(1,10,16))
 }

@@ -21,9 +21,12 @@ Imports:
     truncnorm,
     mnormt,
     magrittr,
-    abind
+    abind,
+    mvabund,
+    knitr,
+    grDevices,
+    stats
 RoxygenNote: 6.1.1
 Suggests: 
-    knitr,
     rmarkdown
 VignetteBuilder: knitr

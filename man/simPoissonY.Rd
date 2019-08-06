@@ -36,3 +36,6 @@ z.true - true values of alpha
 \description{
 This function simulates multivariate Poisson count data from a latent factor model.
 }
+\examples{
+simPoissonY(10,10)
+}

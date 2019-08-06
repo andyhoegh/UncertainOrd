@@ -21,15 +21,16 @@ knitr::opts_chunk$set(
 As an example, the spider data set is used for ordination. First the abundance data is converted to presence/absence.
 
 ```{r}
-library(mvabund)
-library(knitr)
-library(dplyr)
-library(UncertainOrd)
-library(tidyr)
-library(ggplot2)
-data(spider)
+#library(mvabund)
+#library(knitr)
+#library(dplyr)
+#install_github('andyhoegh/UncertainOrd')
+#library(UncertainOrd)
+#library(tidyr)
+#library(ggplot2)
+data(spider, package='mvabund')
 spider.matrix <- matrix(as.numeric(spider$abund > 0), nrow = 28, ncol = 12)
-kable(spider.matrix, col.names = colnames(spider$abund))
+knitr::kable(spider.matrix, col.names = colnames(spider$abund))
 ```
 
 ## Ordination Model
@@ -44,8 +45,10 @@ ord <- UncertainOrd::ordinate_probit(500, spider.matrix)
 
 Using the output from the model above, we can create ordination figures.
 ```{r}
-UncertainOrd::CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'points', items = NULL)
+UncertainOrd::CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'points')
 UncertainOrd::CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'scatter', items = c(1,10,16))
 UncertainOrd::CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'circles', items = c(1,10,16))
+UncertainOrd::CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'density', items = c(1,10,16))
+
 ```
 
