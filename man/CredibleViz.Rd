@@ -21,3 +21,9 @@ plot.obj - ggplot object
 \description{
 This function simulates multivariate Poisson count data from a latent factor model.
 }
+\examples{
+data(spider)
+spider.matrix <- matrix(as.numeric(spider$abund > 0), nrow = 28, ncol = 12)
+ord <- ordinate_probit(500, spider.matrix)
+CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'circles', items = c(1,10,16))
+}

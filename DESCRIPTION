@@ -20,7 +20,8 @@ Imports:
     cluster,
     truncnorm,
     mnormt,
-    magrittr
+    magrittr,
+    abind
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,

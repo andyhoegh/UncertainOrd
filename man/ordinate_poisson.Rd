@@ -9,7 +9,7 @@ ordinate_poisson(num.mcmc, Y, burn.in = 100)
 \arguments{
 \item{num.mcmc}{- number of mcmc iterations}
 
-\item{Y}{- an n X p matrix of presence data}
+\item{Y}{- an n X p matrix of abundance data}
 
 \item{burn.in}{- number of burn in samples, default is 100}
 }
@@ -23,5 +23,11 @@ theta.samples
 z.samples
 }
 \description{
-Fits latent factor model to binary data with probit link
+Fits latent factor model to count data with Poisson sampling model
+}
+\examples{
+set.seed(08052019)
+Y <- rpois(100,100)
+Y.matrix <- matrix(Y, 10, 10)
+ordinate_poisson(1000, Y.matrix)
 }

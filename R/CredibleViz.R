@@ -7,19 +7,25 @@
 #' @param items - items to display uncertainty, only works for circles or scatter
 #' @return plot.obj - ggplot object
 #' @importFrom magrittr "%>%"
+#' @examples
+#' data(spider)
+#' spider.matrix <- matrix(as.numeric(spider$abund > 0), nrow = 28, ncol = 12)
+#' ord <- ordinate_probit(500, spider.matrix)
+#' CredibleViz(ord$z.samples[,,1], ord$z.samples[,,2], type = 'circles', items = c(1,10,16))
 #' @export
 
 CredibleViz <- function(coord1, coord2, type = 'points', items = NULL){
   ### Create thin data
   num.pts <- ncol(coord1)
+  num.sims <- nrow(coord1)
 
-  coord1.thin <- coord1 %>% as.data.frame() %>% tidyr::gather %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
-  coord2.thin <- coord2 %>% as.data.frame() %>% tidyr::gather %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
-  combined <- data.frame(lv1 = coord1.thin$value, lv2 = coord2.thin$value, key = coord1.thin$key)
+  coord1.thin <- coord1 %>% as.data.frame() %>% tidyr::gather() %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
+  coord2.thin <- coord2 %>% as.data.frame() %>% tidyr::gather() %>% dplyr::mutate(key = ordered(key, levels=unique(key)))
+  combined <- data.frame(lv1 = coord1.thin$value, lv2 = coord2.thin$value, key = rep(1:num.pts, each = num.sims))
   combined.summarized <- combined %>% dplyr::group_by(key) %>% dplyr::summarise(mean.lv1 = mean(lv1), mean.lv2 = mean(lv2)) %>% dplyr::mutate(id = 1:num.pts)
 
   ### Points plot
-  plot.obj <- ggplot2::ggplot(combined.summarized, aes(x=mean.lv1, y=mean.lv2)) + ggplot2::geom_text(aes(label=id, color=as.factor(id))) + ggplot2::guides(color=FALSE) + ggplot2::xlab('latent variable one') + ggplot2::ylab('latent variable two')  + ggplot2::theme_bw() + ggplot2::ggtitle('')
+  plot.obj <- ggplot2::ggplot(combined.summarized, aes(x=mean.lv1, y=mean.lv2)) + ggplot2::geom_text(aes(label=id, color=as.factor(id))) + ggplot2::guides(color=FALSE) + ggplot2::xlab('latent variable one') + ggplot2::ylab('latent variable two')  + ggplot2::theme_bw() + ggplot2::ggtitle('') + ggplot2::ylim(-3.1,3.1) + ggplot2::xlim(-3.1,3.1)
 
   gg_color_hue <- function(n) {
     hues = seq(15, 375, length = n + 1)
@@ -33,11 +39,10 @@ CredibleViz <- function(coord1, coord2, type = 'points', items = NULL){
 
     for (item.numb in 1:length(items)){
       sims.tmp <- combined %>% dplyr::filter(key == items[item.numb])
-      item.pos <- (1:num.pts)[colnames(coord1) == items[item.numb]]
-      plot.obj <- plot.obj + ggplot2::geom_point(data = sims.tmp, aes(x=lv1, y=lv2), alpha=.15, color = cols[item.pos])
+      plot.obj <- plot.obj + ggplot2::geom_point(data = sims.tmp, aes(x=lv1, y=lv2), alpha=.15, color = cols[items[item.numb]])
       plot.obj
     }
-    plot.obj <- plot.obj + ggplot2::geom_text(aes(label=id, color=as.factor(id))) + ggplot2::ylim(-3.1,3.1) + ggplot2::xlim(-3.1,3.1)
+    plot.obj <- plot.obj + ggplot2::geom_text(aes(label=id, color=as.factor(id)))
     plot.obj
   } else if (type == 'circles'){
 
@@ -50,10 +55,9 @@ CredibleViz <- function(coord1, coord2, type = 'points', items = NULL){
       points_in_ellipse <- sims.temp[fit$best, ]
       ellipse_boundary <- predict(cluster::ellipsoidhull(points_in_ellipse))
       ellipse_boundary_df <- data.frame(ellipse_boundary)
-      plot.obj <- plot.obj + ggplot2::geom_path(data=ellipse_boundary_df, aes(x=V1, y=y),linetype=3, color=cols[all.itempos[item.numb]])
+      plot.obj <- plot.obj + ggplot2::geom_path(data=ellipse_boundary_df, aes(x=V1, y=y),linetype=3, color=cols[items[item.numb]])
     }
 
-    plot.obj <- plot.obj + ggplot2::ylim(-3.1,3.1) + ggplot2::xlim(-3.1,3.1)
   }
 
   return(list(plot.obj = plot.obj))

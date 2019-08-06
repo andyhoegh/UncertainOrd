@@ -1,88 +1,31 @@
 #' Poisson Ordination
 #'
-#' Fits latent factor model to binary data with probit link
+#' Fits latent factor model to count data with Poisson sampling model
 #' @param num.mcmc - number of mcmc iterations
-#' @param Y - an n X p matrix of presence data
+#' @param Y - an n X p matrix of abundance data
 #' @param burn.in - number of burn in samples, default is 100
 #' @return alpha.samples
 #' @return beta.samples
 #' @return theta.samples
 #' @return z.samples
+#' @examples
+#' set.seed(08052019)
+#' Y <- rpois(100,100)
+#' Y.matrix <- matrix(Y, 10, 10)
+#' ordinate_poisson(1000, Y.matrix)
 #' @export
 
 ordinate_poisson <- function(num.mcmc, Y, burn.in = 100){
   # Initialize Storage
-  n <- nrow(Y)
-  p <- ncol(Y)
-  Y.vec <- as.numeric(Y)
-  alpha.samples <- matrix(0, num.mcmc, n, byrow=T)
-  beta.samples <- matrix(0,num.mcmc, p, byrow=T)
-  theta.samples <- array(0, dim = c(num.mcmc,p,2))
-  z.samples <- array(0, dim = c(num.mcmc,n,2))
+  mcmc <- boral::boral(Y, family = 'poisson', lv.control = list(num.lv = 2), row.eff = 'fixed', save.model =T, prior.control = list(type=c('normal','normal','normal','halfcauchy'), hypparams = c(1,1,1,20) ))
+  set.seed(NULL) # as boral automatically sets seed
+  mcmc.sims <- mcmc$jags.model$BUGSoutput$sims.matrix
+  z1  <- mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('lvs[')) %>% dplyr::select(dplyr::ends_with('1]'))
+  z2 <- mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('lvs[')) %>% dplyr::select(dplyr::ends_with('2]'))
+  alpha <- mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('row.coefs.ID1')) %>% dplyr::select(dplyr::ends_with('1]'))
+  beta <- mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('lv.coefs[')) %>% dplyr::select(dplyr::ends_with('1]'))
+  theta1 <- mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('lv.coefs[')) %>% dplyr::select(dplyr::ends_with('2]'))
+  theta2 <- mcmc.sims %>% as.data.frame %>% dplyr::select(dplyr::starts_with('lv.coefs[')) %>% dplyr::select(dplyr::ends_with('3]'))
 
-  latent.z.samples <- array(0, dim = c(num.mcmc,n,p))
-
-  # Prior Values
-  mu.beta <- mu.alpha <-  0 # prior mean
-  V.beta <- V.alpha <- 1 # prior variance
-  P.beta <- P.alpha <- solve(V.beta)
-  V.theta <- 1
-  P.theta <- diag(1/V.theta, nrow=2, ncol=2)
-
-  # Precompute values
-  S.beta <- solve(n + P.beta)
-  S.alpha <- solve(p + P.alpha)
-
-  # Set up Thresholds for Truncated Normal
-  lower.vals <- rep(-Inf, n * p)
-  upper.vals <- rep(Inf, n * p)
-  lower.vals[Y.vec == 1] <- 0
-  upper.vals[Y.vec == 0] <- 0
-
-  for (iter in 2:num.mcmc){
-    # Vectorized draw for latent z
-    mean.z <- rep(alpha.samples[iter - 1, ],p) + rep(beta.samples[iter - 1,], each=n) + as.numeric(z.samples[iter-1,,] %*% t(theta.samples[iter -1,,]))
-    latent.z.samples[iter, , ] <- truncnorm::rtruncnorm(n = n * p, a=lower.vals, b= upper.vals, mean = mean.z, sd = 1)
-
-    # sample beta
-    for (j in 1:p){
-      m.beta <- S.beta %*% (sum(latent.z.samples[iter,,j] - alpha.samples[iter - 1, ] - z.samples[iter-1,,] %*% theta.samples[iter-1,j ,]) + P.beta * mu.beta)
-      beta.samples[iter,j] <- stats::rnorm(1,m.beta, sd = sqrt(S.beta))
-    }
-
-    # sample alpha
-    for (i in 1:n){
-      m.alpha <- S.alpha %*% (sum(latent.z.samples[iter,i,] - beta.samples[iter,] -  theta.samples[iter - 1, ,] %*% z.samples[iter-1, i,]) + P.alpha * mu.alpha)
-      alpha.samples[iter,i] <- stats::rnorm(1,m.alpha, sd = sqrt(S.alpha))
-    }
-
-
-    # sample theta, which is p x 2
-    # for identifiability, the upper diagonal elements should be zero,
-    # and diagonal elements are strictly positive
-    for (j in 1:p){
-      if (j == 1){
-        S.theta <- solve(t(z.samples[iter-1,,1])  %*% z.samples[iter-1,,1] + solve(V.theta))
-        m.theta <- S.theta * z.samples[iter-1,,1] %*% (latent.z.samples[iter,,j] - alpha.samples[iter,] - beta.samples[iter,j])
-        theta.samples[iter,j,1] <- truncnorm::rtruncnorm(n=1, a=0, b=Inf, mean = m.theta, sd = sqrt(S.theta))
-        theta.samples[iter,j,2] <- 0
-      } else if (j == 2){
-        S.theta <- solve(t(z.samples[iter-1,,]) %*% z.samples[iter-1,,] + P.theta)
-        m.theta <- S.theta %*% t(z.samples[iter-1,,]) %*% (latent.z.samples[iter,,j] - alpha.samples[iter,] - beta.samples[iter,j])
-        theta.samples[iter,j,] <- truncnorm::rtruncnorm(n=1, a = c(-Inf,0), b = c(Inf, Inf), mean = m.theta, sd = sqrt(diag(S.theta)))
-      } else {
-        S.theta <- solve(t(z.samples[iter-1,,]) %*% z.samples[iter-1,,] + P.theta)
-        m.theta <- S.theta %*% t(z.samples[iter-1,,]) %*% (latent.z.samples[iter,,j] - alpha.samples[iter,] - beta.samples[iter,j])
-        theta.samples[iter,j,] <- mnormt::rmnorm(n=1, mean = m.theta, varcov = S.theta)
-      }
-    }
-
-    # sample z, which is n x 2
-    S.z <- solve(t(theta.samples[iter,,]) %*%  theta.samples[iter,,] + diag(2))
-    for (i in 1:n){
-      m.z <- S.z %*% t(theta.samples[iter,,]) %*% (latent.z.samples[iter,i,] - alpha.samples[iter,i] - beta.samples[iter,])
-      z.samples[iter,i,] <- mnormt::rmnorm(n=1, mean = m.z, varcov = S.z)
-    }
-  }
-  return(list(alpha.samples = alpha.samples[burn.in:num.mcmc,], beta.samples = beta.samples[burn.in:num.mcmc,], theta.samples=theta.samples[burn.in:num.mcmc,,], z.samples = z.samples[burn.in:num.mcmc,,]))
+  return(list(alpha.samples = alpha, beta.samples = beta, theta.samples= abind::abind(theta1, theta2, along = 3), z.samples = abind::abind(z1, z2, along = 3)))
 }
