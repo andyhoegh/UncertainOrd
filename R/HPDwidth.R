@@ -10,6 +10,7 @@
 #' @param sd.beta - sd for beta parameter: default is 1
 #' @param num.replicates - number of simulations: default is 1
 #' @return width - average HPD across all latent factors
+#' @examples HPDwidth('binomial',10,10)
 #' @export
 
 HPDwidth <- function(family, n, p, num.replicates = 1 , mu.alpha = 0, sd.alpha = 1, mu.beta = 1, sd.beta = 1){

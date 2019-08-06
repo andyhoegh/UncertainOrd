@@ -26,3 +26,6 @@ width - average HPD across all latent factors
 \description{
 function to simulate presence data and calculated HPD width for latent variables
 }
+\examples{
+BinaryHPD(10,10)
+}

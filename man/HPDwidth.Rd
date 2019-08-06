@@ -30,3 +30,6 @@ width - average HPD across all latent factors
 \description{
 This function simulates multivariate data from a latent factor model to estimate the average width of the HPD intervals
 }
+\examples{
+HPDwidth('binomial',10,10)
+}

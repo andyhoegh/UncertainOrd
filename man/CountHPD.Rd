@@ -26,3 +26,6 @@ width - average HPD across all latent factors
 \description{
 function to simulate abundance data and calculated HPD width for latent variables
 }
+\examples{
+CountHPD(10,10)
+}

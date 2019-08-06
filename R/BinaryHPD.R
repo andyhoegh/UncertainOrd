@@ -9,6 +9,8 @@
 #' @param sd.beta - sd for beta parameter: default is 1
 #' @return width - average HPD across all latent factors
 #' @importFrom magrittr "%>%"
+#' @examples
+#' BinaryHPD(10,10)
 #' @export
 
 BinaryHPD <- function(n, p, mu.alpha = 0, sd.alpha = 1, mu.beta = 0, sd.beta = 1){
